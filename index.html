@@ -1,0 +1,1224 @@
+<title>スカインライン・テクノロジーズ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+/* ============================================================
+   Tokens — light is the base; dark redefines tokens only.
+   ============================================================ */
+:root {
+  --paper:        #F1F3F6;
+  --surface:      #FFFFFF;
+  --surface-alt:  #E8ECF1;
+  --ink:          #101A2D;
+  --ink-soft:     #33405A;
+  --muted:        #5A6780;
+  --line:         #D5DCE5;
+  --line-strong:  #B8C2D0;
+  --accent:       #146C74;
+  --accent-bright:#2E969E;
+  --accent-wash:  #E0EDEE;
+  --on-accent:    #FFFFFF;
+
+  --hero-bg:      #101A2D;
+  --hero-ink:     #F2F5F9;
+  --hero-muted:   #93A2BC;
+  --hero-line:    #2B3A55;
+  --hero-ridge:   #1B2B45;
+  --hero-accent:  #5BC0C6;
+
+  --shadow: 0 1px 2px rgba(16, 26, 45, .05), 0 8px 24px -12px rgba(16, 26, 45, .18);
+
+  --f-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --f-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --rail: 232px;
+  --pad: clamp(20px, 5vw, 64px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:        #0A111E;
+    --surface:      #111B2C;
+    --surface-alt:  #162236;
+    --ink:          #E7EDF6;
+    --ink-soft:     #C2CDDE;
+    --muted:        #8E9DB7;
+    --line:         #22314A;
+    --line-strong:  #33455F;
+    --accent:       #5BC0C6;
+    --accent-bright:#84D7DC;
+    --accent-wash:  #133034;
+    --on-accent:    #06121A;
+
+    --hero-bg:      #070D18;
+    --hero-ink:     #E7EDF6;
+    --hero-muted:   #8E9DB7;
+    --hero-line:    #1D2A40;
+    --hero-ridge:   #101B2C;
+    --hero-accent:  #5BC0C6;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -14px rgba(0, 0, 0, .7);
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:        #0A111E;
+  --surface:      #111B2C;
+  --surface-alt:  #162236;
+  --ink:          #E7EDF6;
+  --ink-soft:     #C2CDDE;
+  --muted:        #8E9DB7;
+  --line:         #22314A;
+  --line-strong:  #33455F;
+  --accent:       #5BC0C6;
+  --accent-bright:#84D7DC;
+  --accent-wash:  #133034;
+  --on-accent:    #06121A;
+
+  --hero-bg:      #070D18;
+  --hero-ink:     #E7EDF6;
+  --hero-muted:   #8E9DB7;
+  --hero-line:    #1D2A40;
+  --hero-ridge:   #101B2C;
+  --hero-accent:  #5BC0C6;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -14px rgba(0, 0, 0, .7);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  text-wrap: balance;
+  margin: 0;
+  line-height: 1.45;
+}
+p { margin: 0; }
+ul, ol, dl, dd, dt { margin: 0; padding: 0; }
+li { list-style: none; }
+
+a { color: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   Shell — rail + main column
+   ============================================================ */
+.shell { display: block; }
+
+.rail {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--paper);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px var(--pad);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+
+.mark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  text-decoration: none;
+}
+.mark svg { display: block; }
+.mark-name {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
+.rail-nav { display: flex; gap: 2px; flex: 0 0 auto; }
+.rail-nav a {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 6px 10px;
+  font-size: 13.5px;
+  text-decoration: none;
+  color: var(--muted);
+  white-space: nowrap;
+  border-radius: 3px;
+  transition: color .18s ease, background-color .18s ease;
+}
+.rail-nav a:hover { color: var(--ink); background: var(--surface-alt); }
+.rail-nav .en {
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .65;
+}
+
+.rail-cta {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  padding: 7px 15px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--on-accent);
+  background: var(--accent);
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: background-color .18s ease;
+}
+.rail-cta:hover { background: var(--accent-bright); }
+
+@media (min-width: 1080px) {
+  .shell { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); }
+  .rail {
+    align-self: start;
+    height: 100vh;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    overflow: visible;
+    padding: 34px 0 34px 28px;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+    background: var(--paper);
+    backdrop-filter: none;
+  }
+  .mark { margin-bottom: 34px; }
+  .rail-nav { flex-direction: column; gap: 0; }
+  .rail-nav a { padding: 7px 0; font-size: 14px; }
+  .rail-nav .en { margin-inline-start: auto; padding-inline-end: 22px; }
+  .rail-nav a:hover { background: transparent; color: var(--accent); }
+  .rail-cta { margin: auto 22px 0 0; text-align: center; padding: 11px 15px; }
+}
+
+main { min-width: 0; }
+
+/* ============================================================
+   News bar
+   ============================================================ */
+.news-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  padding: 13px var(--pad);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 28px;
+}
+.news-label {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.news-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.news-list {
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.news-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  font-size: 13.5px;
+}
+.news-item time {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.news-item .news-tag {
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.news-item span.title { color: var(--ink-soft); }
+
+@media (min-width: 900px) {
+  .news-list { flex-direction: row; flex-wrap: wrap; gap: 8px 32px; }
+  .news-item { flex: 0 1 auto; }
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero {
+  position: relative;
+  background: var(--hero-bg);
+  color: var(--hero-ink);
+  padding: clamp(56px, 9vw, 104px) var(--pad) 0;
+  overflow: hidden;
+}
+.hero-inner {
+  max-width: 900px;
+  position: relative;
+  z-index: 2;
+  padding-bottom: clamp(110px, 14vw, 150px);
+}
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--hero-accent);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::after { content: ""; height: 1px; flex: 1; max-width: 120px; background: var(--hero-line); }
+
+.hero h1 {
+  margin: 26px 0 0;
+  font-size: clamp(42px, 8.4vw, 88px);
+  font-weight: 900;
+  letter-spacing: .06em;
+  line-height: 1.22;
+}
+.hero h1 .dot { color: var(--hero-accent); }
+
+.hero-lead {
+  margin-top: 26px;
+  max-width: 33em;
+  font-size: clamp(15px, 1.55vw, 17px);
+  color: var(--hero-muted);
+}
+.hero-lead strong { color: var(--hero-ink); font-weight: 500; }
+
+.hero-name {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hero-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 18px;
+  font-size: 13.5px;
+  color: var(--hero-muted);
+}
+.hero-name b {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--hero-ink);
+  letter-spacing: .05em;
+}
+.hero-name .mono { font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; }
+
+.ridge {
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  width: 100%;
+  height: clamp(80px, 12vw, 132px);
+  display: block;
+  z-index: 1;
+}
+
+/* ============================================================
+   Figures strip
+   ============================================================ */
+.figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.figure {
+  padding: 22px var(--pad);
+  border-top: 1px solid var(--line);
+  border-inline-end: 1px solid var(--line);
+}
+.figure:last-child { border-inline-end: 0; }
+.figure dt {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.figure dd {
+  margin-top: 6px;
+  font-family: var(--f-display);
+  font-size: clamp(26px, 3.4vw, 34px);
+  font-weight: 700;
+  letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.figure dd span {
+  font-size: 15px;
+  font-family: var(--f-body);
+  font-weight: 500;
+  color: var(--muted);
+  margin-inline-start: 3px;
+}
+.figure .note { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+@media (min-width: 1080px) {
+  .figure { padding-inline: 34px; }
+  .figure:first-child { padding-inline-start: var(--pad); }
+}
+
+/* ============================================================
+   Sections
+   ============================================================ */
+.sec { padding: clamp(52px, 7vw, 86px) var(--pad); border-bottom: 1px solid var(--line); }
+.sec-tint { background: var(--surface); }
+
+.sec-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 18px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: clamp(28px, 4vw, 44px);
+  max-width: 1100px;
+}
+.sec-head h2 { font-size: clamp(24px, 3.4vw, 32px); letter-spacing: .09em; }
+.sec-head .en {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.sec-head .sub { margin-inline-start: auto; font-size: 13.5px; color: var(--muted); }
+
+.wrap { max-width: 1100px; }
+.lead { max-width: 36em; color: var(--ink-soft); font-size: 15.5px; }
+
+/* --- Services --- */
+.services {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 34px;
+}
+@media (min-width: 760px) { .services { grid-template-columns: 1fr 1fr; } }
+
+.svc {
+  background: var(--paper);
+  padding: clamp(24px, 3vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sec-tint .svc { background: var(--surface); }
+.svc-key {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.svc h3 { font-size: 20px; letter-spacing: .04em; }
+.svc h3 .ruby {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 4px;
+}
+.svc p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.95; }
+.svc ul {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line-strong);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+.svc li { font-size: 12.5px; color: var(--muted); }
+.svc li::before { content: "—"; color: var(--accent); margin-inline-end: 6px; }
+
+/* --- Stack --- */
+.stack { display: grid; gap: 26px; }
+@media (min-width: 700px) { .stack { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1060px) { .stack { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.stack-group h3 {
+  font-size: 14px;
+  letter-spacing: .1em;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--line-strong);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.chip {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  padding: 3px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--ink-soft);
+  background: var(--surface);
+}
+.sec-tint .chip { background: var(--paper); }
+
+/* --- Cases --- */
+.cases { display: grid; gap: 20px; }
+@media (min-width: 880px) { .cases { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.case {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow);
+}
+.sec-tint .case { background: var(--paper); }
+.case-meta { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; }
+.case-meta .ind {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  background: var(--accent-wash);
+  color: var(--accent);
+  border-radius: 2px;
+}
+.case-meta .who { font-size: 12.5px; color: var(--muted); }
+.case h3 { font-size: 17.5px; letter-spacing: .03em; }
+.case .issue { font-size: 13.5px; color: var(--ink-soft); }
+.case-res {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
+}
+.res-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.res-row span { font-size: 12.5px; color: var(--muted); }
+.res-row b {
+  font-family: var(--f-display);
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .01em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* --- History --- */
+.history { border-top: 1px solid var(--line); max-width: 800px; }
+.hist-row {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 4px 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.hist-row .yr {
+  font-family: var(--f-mono);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  letter-spacing: .02em;
+}
+.hist-row p { font-size: 14.5px; }
+.hist-row .mo { font-family: var(--f-mono); font-size: 11px; color: var(--muted); margin-inline-end: 8px; }
+
+/* --- Profile --- */
+.profile { border-top: 1px solid var(--line-strong); max-width: 880px; }
+.prow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+@media (min-width: 620px) {
+  .prow { grid-template-columns: 172px 1fr; gap: 24px; padding: 14px 0; }
+}
+.prow dt { font-size: 13.5px; font-weight: 500; color: var(--muted); }
+.prow dd { font-size: 14.5px; }
+.prow dd .mono { font-size: 13.5px; }
+.prow dd ul li { font-size: 14px; }
+.prow dd ul li::before { content: "・"; color: var(--accent); }
+
+/* --- Careers --- */
+.careers { display: grid; gap: 18px; }
+@media (min-width: 820px) { .careers { grid-template-columns: 1.15fr 1fr; gap: 40px; } }
+.roles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.role {
+  background: var(--surface);
+  padding: 14px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  align-items: baseline;
+}
+.sec-tint .role { background: var(--paper); }
+.role b { font-size: 14.5px; font-family: var(--f-display); font-weight: 700; letter-spacing: .03em; }
+.role .cond { font-size: 12.5px; color: var(--muted); margin-inline-start: auto; }
+
+/* --- Contact --- */
+.contact-grid { display: grid; gap: 34px; max-width: 1100px; }
+@media (min-width: 900px) { .contact-grid { grid-template-columns: 340px minmax(0, 1fr); gap: 56px; } }
+
+.cinfo { display: grid; gap: 20px; align-content: start; }
+.cinfo-item dt {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cinfo-item dd { margin-top: 4px; font-size: 15px; }
+.cinfo-item dd.tel {
+  font-family: var(--f-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+}
+.cinfo-item dd small {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-family: var(--f-body);
+  letter-spacing: 0;
+}
+
+form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.req {
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  padding: 1px 5px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: 2px;
+}
+
+input, select, textarea {
+  font-family: var(--f-body);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  padding: 10px 12px;
+  width: 100%;
+  transition: border-color .18s ease;
+}
+.sec-tint input, .sec-tint select, .sec-tint textarea { background: var(--paper); }
+input:hover, select:hover, textarea:hover { border-color: var(--accent); }
+textarea { resize: vertical; min-height: 118px; line-height: 1.8; }
+.two { display: grid; gap: 16px; }
+@media (min-width: 560px) { .two { grid-template-columns: 1fr 1fr; } }
+
+.submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 4px; }
+button.send {
+  font-family: var(--f-body);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  padding: 13px 40px;
+  color: var(--paper);
+  background: var(--ink);
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease;
+}
+button.send:hover { background: var(--accent); color: var(--on-accent); }
+.submit-note { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+
+.receipt {
+  border: 1px solid var(--accent);
+  border-inline-start: 3px solid var(--accent);
+  background: var(--accent-wash);
+  padding: 16px 18px;
+  display: grid;
+  gap: 6px;
+}
+.receipt b { font-size: 14.5px; font-family: var(--f-display); letter-spacing: .04em; }
+.receipt p { font-size: 13px; color: var(--ink-soft); }
+.receipt .no { font-family: var(--f-mono); font-size: 15px; letter-spacing: .08em; color: var(--accent); }
+
+/* --- Footer --- */
+footer {
+  background: var(--hero-bg);
+  color: var(--hero-muted);
+  padding: clamp(40px, 6vw, 58px) var(--pad) 34px;
+}
+.foot-top { display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: flex-start; max-width: 1100px; }
+.foot-mark { display: flex; align-items: center; gap: 10px; color: var(--hero-ink); }
+.foot-mark b { font-family: var(--f-display); font-size: 16px; letter-spacing: .05em; font-weight: 700; }
+.foot-addr { font-size: 13px; line-height: 1.9; }
+.foot-links { margin-inline-start: auto; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 12.5px; }
+.foot-bottom {
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hero-line);
+  display: grid;
+  gap: 12px;
+  max-width: 1100px;
+}
+.copy { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; }
+.disclaimer { font-size: 12px; line-height: 1.8; color: var(--hero-muted); max-width: 52em; }
+.disclaimer b { color: var(--hero-accent); font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<div class="shell">
+
+  <!-- ===================== RAIL ===================== -->
+  <nav class="rail" aria-label="セクション">
+    <a class="mark" href="#top">
+      <svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+        <polygon points="0,20 0,15 5,15 5,10 10,10 10,13 14,13 14,4 18,4 18,8 22,8 22,1 26,1 26,11 30,11 30,20"
+                 fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"></polygon>
+      </svg>
+      <span class="mark-name">スカインライン</span>
+    </a>
+
+    <div class="rail-nav">
+      <a href="#news">お知らせ<span class="en mono">News</span></a>
+      <a href="#services">事業内容<span class="en mono">Services</span></a>
+      <a href="#stack">技術<span class="en mono">Stack</span></a>
+      <a href="#cases">導入事例<span class="en mono">Cases</span></a>
+      <a href="#history">沿革<span class="en mono">History</span></a>
+      <a href="#profile">会社概要<span class="en mono">Profile</span></a>
+      <a href="#careers">採用<span class="en mono">Careers</span></a>
+    </div>
+
+    <a class="rail-cta" href="#contact">お問い合わせ</a>
+  </nav>
+
+  <main id="top">
+
+    <!-- ===================== NEWS ===================== -->
+    <div class="news-bar" id="news" aria-label="お知らせ">
+      <p class="news-label">News</p>
+      <ul class="news-list">
+        <li class="news-item">
+          <time class="mono" datetime="2026-09-01">2026.09.01</time>
+          <span class="news-tag mono">Service</span>
+          <span class="title">「Ridgeline」導入企業が300社を突破しました</span>
+        </li>
+        <li class="news-item">
+          <time class="mono" datetime="2026-07-15">2026.07.15</time>
+          <span class="news-tag mono">Recruit</span>
+          <span class="title">2027年4月入社の新卒採用エントリーを開始しました</span>
+        </li>
+        <li class="news-item">
+          <time class="mono" datetime="2026-04-10">2026.04.10</time>
+          <span class="news-tag mono">Press</span>
+          <span class="title">資本金を9,800万円に増資しました</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ===================== HERO ===================== -->
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow mono">Software Development · Est. 2013 · Tokyo</p>
+
+        <h1>稜線を、引く<span class="dot">。</span></h1>
+
+        <p class="hero-lead">
+          事業の輪郭がまだ曖昧なうちから、<strong>動くソフトウェア</strong>で形にする。
+          受託開発と自社プロダクトの両輪で、製造・物流・金融の現場に十二年間、コードを納めてきました。
+        </p>
+
+        <div class="hero-name">
+          <b>スカインライン・テクノロジーズ株式会社</b>
+          <span class="mono">Skyline Technologies, Inc.</span>
+        </div>
+      </div>
+
+      <svg class="ridge" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <polygon fill="var(--hero-ridge)" stroke="var(--hero-accent)" stroke-width="1.5"
+          points="0,120 0,96 40,96 40,74 96,74 96,88 150,88 150,52 196,52 196,66 250,66 250,30 300,30 300,58 356,58 356,40 404,40 404,78 460,78 460,22 512,22 512,50 566,50 566,36 620,36 620,70 676,70 676,44 730,44 730,14 784,14 784,46 840,46 840,62 894,62 894,34 948,34 948,58 1004,58 1004,80 1056,80 1056,54 1110,54 1110,88 1160,88 1160,68 1200,68 1200,120"></polygon>
+      </svg>
+    </header>
+
+    <!-- ===================== FIGURES ===================== -->
+    <dl class="figures">
+      <div class="figure">
+        <dt>Founded</dt>
+        <dd>2013<span>年</span></dd>
+        <p class="note">創業から連続黒字</p>
+      </div>
+      <div class="figure">
+        <dt>Engineers</dt>
+        <dd>142<span>名</span></dd>
+        <p class="note">全社187名／技術職比率 76%</p>
+      </div>
+      <div class="figure">
+        <dt>Projects</dt>
+        <dd>240<span>件+</span></dd>
+        <p class="note">受託開発の累計納品数</p>
+      </div>
+      <div class="figure">
+        <dt>Uptime — SaaS</dt>
+        <dd>99.98<span>%</span></dd>
+        <p class="note">Ridgeline／直近12か月実績</p>
+      </div>
+    </dl>
+
+    <!-- ===================== SERVICES ===================== -->
+    <section class="sec sec-tint" id="services">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>事業内容</h2>
+          <span class="en">Services</span>
+          <span class="sub">受託開発・自社SaaS・データ基盤・技術顧問</span>
+        </div>
+
+        <p class="lead">
+          「作って終わり」を前提にしません。要件が固まる前の議論から、リリース後の運用当番表まで、
+          同じチームが地続きで関わります。
+        </p>
+
+        <div class="services">
+          <article class="svc">
+            <p class="svc-key mono">Contract Development</p>
+            <h3>受託システム開発<span class="ruby mono">要件定義 → 構築 → 運用保守</span></h3>
+            <p>基幹システムの刷新、業務システムの新規構築、B2B Webサービスの立ち上げ。要件定義・PoCの段階から参加し、2週間スプリントで動く画面を出しながら仕様を固めていきます。</p>
+            <ul>
+              <li>要件定義／PoC</li>
+              <li>アジャイル開発</li>
+              <li>基幹刷新</li>
+              <li>運用保守</li>
+            </ul>
+          </article>
+
+          <article class="svc">
+            <p class="svc-key mono">SaaS Product</p>
+            <h3>生産計画SaaS「Ridgeline」<span class="ruby mono">Ridgeline — Production Planning</span></h3>
+            <p>多品種少量生産の工場向け、生産計画最適化サービス。Excelと職人技に閉じていた計画立案を、制約条件を明示したモデルとして共有可能にします。導入312社。</p>
+            <ul>
+              <li>計画最適化</li>
+              <li>制約モデリング</li>
+              <li>MES連携</li>
+              <li>オンプレ接続</li>
+            </ul>
+          </article>
+
+          <article class="svc">
+            <p class="svc-key mono">Data Platform</p>
+            <h3>データ基盤・MLOps<span class="ruby mono">DWH / 需要予測 / パイプライン運用</span></h3>
+            <p>部署ごとに分断されたデータの統合、需要予測モデルの構築と、それを自社で回し続けるためのパイプライン整備。モデルそのものよりも、更新され続ける仕組みを重視します。</p>
+            <ul>
+              <li>DWH構築</li>
+              <li>需要予測</li>
+              <li>パイプライン運用</li>
+              <li>データ品質監視</li>
+            </ul>
+          </article>
+
+          <article class="svc">
+            <p class="svc-key mono">Technical Advisory</p>
+            <h3>技術顧問・内製化支援<span class="ruby mono">CTO代行 / 採用設計 / 診断</span></h3>
+            <p>CTO代行、技術選定レビュー、エンジニア採用の設計。最終的に私たちが抜けても回ることをゴールに置き、コードレビューの文化ごと移植します。</p>
+            <ul>
+              <li>CTO代行</li>
+              <li>採用設計</li>
+              <li>アーキテクチャ診断</li>
+              <li>レビュー文化の移植</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STACK ===================== -->
+    <section class="sec" id="stack">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>技術スタック</h2>
+          <span class="en">Stack</span>
+          <span class="sub">案件ごとに選定、社内標準は最小限に</span>
+        </div>
+
+        <div class="stack">
+          <div class="stack-group">
+            <h3>言語</h3>
+            <div class="chips">
+              <span class="chip">TypeScript</span><span class="chip">Go</span><span class="chip">Python</span>
+              <span class="chip">Kotlin</span><span class="chip">Rust</span><span class="chip">Java</span>
+            </div>
+          </div>
+          <div class="stack-group">
+            <h3>フロントエンド</h3>
+            <div class="chips">
+              <span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Vue</span>
+              <span class="chip">SwiftUI</span><span class="chip">Jetpack Compose</span>
+            </div>
+          </div>
+          <div class="stack-group">
+            <h3>基盤・運用</h3>
+            <div class="chips">
+              <span class="chip">AWS</span><span class="chip">Google Cloud</span><span class="chip">Terraform</span>
+              <span class="chip">Kubernetes</span><span class="chip">GitHub Actions</span><span class="chip">Datadog</span>
+            </div>
+          </div>
+          <div class="stack-group">
+            <h3>データ</h3>
+            <div class="chips">
+              <span class="chip">PostgreSQL</span><span class="chip">BigQuery</span><span class="chip">dbt</span>
+              <span class="chip">Airflow</span><span class="chip">Kafka</span><span class="chip">DuckDB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CASES ===================== -->
+    <section class="sec sec-tint" id="cases">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>導入事例</h2>
+          <span class="en">Cases</span>
+          <span class="sub">数値はいずれも導入後12か月時点</span>
+        </div>
+
+        <div class="cases">
+          <article class="case">
+            <div class="case-meta">
+              <span class="ind mono">Manufacturing</span>
+              <span class="who">自動車部品メーカー／従業員 1,200名</span>
+            </div>
+            <h3>生産計画の属人化を解く</h3>
+            <p class="issue">ベテラン2名のExcelに依存していた週次計画を、制約条件を明示したモデルへ移行。引き継ぎ不能というリスクを解消しました。</p>
+            <div class="case-res">
+              <div class="res-row"><span>計画立案時間</span><b>12h → 40分</b></div>
+              <div class="res-row"><span>欠品率</span><b>−38%</b></div>
+            </div>
+          </article>
+
+          <article class="case">
+            <div class="case-meta">
+              <span class="ind mono">Logistics</span>
+              <span class="who">3PL事業者／拠点 24箇所</span>
+            </div>
+            <h3>配車システムの全面刷新</h3>
+            <p class="issue">18年動いていたオンプレ配車システムを段階移行でクラウドへ。旧系と並走させながら11か月かけて切り替えました。</p>
+            <div class="case-res">
+              <div class="res-row"><span>障害起因の配送遅延</span><b>−72%</b></div>
+              <div class="res-row"><span>年間運用費</span><b>−2,100万円</b></div>
+            </div>
+          </article>
+
+          <article class="case">
+            <div class="case-meta">
+              <span class="ind mono">Finance</span>
+              <span class="who">信用金庫／店舗 38店</span>
+            </div>
+            <h3>内製チームをゼロから立ち上げる</h3>
+            <p class="issue">稟議ワークフローの構築を題材に、技術顧問として採用・教育・レビュー体制を設計。2年で自走できる状態へ移行しました。</p>
+            <div class="case-res">
+              <div class="res-row"><span>内製開発者</span><b>0 → 11名</b></div>
+              <div class="res-row"><span>申請処理日数</span><b>5.2日 → 1.4日</b></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== HISTORY ===================== -->
+    <section class="sec" id="history">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>沿革</h2>
+          <span class="en">History</span>
+        </div>
+
+        <div class="history">
+          <div class="hist-row"><span class="yr mono">2013</span><p><span class="mo mono">04</span>東京都渋谷区にて設立。受託開発事業を開始。</p></div>
+          <div class="hist-row"><span class="yr mono">2015</span><p><span class="mo mono">09</span>製造業向け工程管理ツールを、初の自社プロダクトとして公開。</p></div>
+          <div class="hist-row"><span class="yr mono">2017</span><p><span class="mo mono">06</span>大阪開発拠点を開設。西日本の製造業案件に対応。</p></div>
+          <div class="hist-row"><span class="yr mono">2019</span><p><span class="mo mono">11</span>生産計画SaaS「Ridgeline」提供開始。</p></div>
+          <div class="hist-row"><span class="yr mono">2021</span><p><span class="mo mono">03</span>従業員100名を突破。データ基盤・MLOps事業を分離。</p></div>
+          <div class="hist-row"><span class="yr mono">2023</span><p><span class="mo mono">07</span>福岡開発拠点を開設。ISMS（ISO/IEC 27001）認証を取得。</p></div>
+          <div class="hist-row"><span class="yr mono">2025</span><p><span class="mo mono">05</span>「Ridgeline」導入300社を達成。技術顧問事業を本格化。</p></div>
+          <div class="hist-row"><span class="yr mono">2026</span><p><span class="mo mono">04</span>資本金を9,800万円へ増資。海外製造拠点向けの多言語対応を開始。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROFILE ===================== -->
+    <section class="sec sec-tint" id="profile">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>会社概要</h2>
+          <span class="en">Profile</span>
+          <span class="sub">2026年9月1日現在</span>
+        </div>
+
+        <dl class="profile">
+          <div class="prow"><dt>商号</dt><dd>スカインライン・テクノロジーズ株式会社</dd></div>
+          <div class="prow"><dt>英文社名</dt><dd class="mono">Skyline Technologies, Inc.</dd></div>
+          <div class="prow"><dt>設立</dt><dd>2013年4月10日</dd></div>
+          <div class="prow"><dt>資本金</dt><dd><span class="mono">98,000,000</span> 円（資本準備金を含む）</dd></div>
+          <div class="prow"><dt>代表者</dt><dd>代表取締役社長　桐生　遼</dd></div>
+          <div class="prow"><dt>役員</dt><dd>取締役CTO　七尾　葵／取締役CFO　真壁　直人／社外取締役 1名</dd></div>
+          <div class="prow"><dt>従業員数</dt><dd><span class="mono">187</span> 名（うちエンジニア <span class="mono">142</span> 名）</dd></div>
+          <div class="prow"><dt>本社</dt><dd>東京都渋谷区千駄ヶ谷1-2-3　稜線千駄ヶ谷ビル 7F</dd></div>
+          <div class="prow"><dt>開発拠点</dt><dd>大阪オフィス（大阪市北区）／福岡オフィス（福岡市博多区）</dd></div>
+          <div class="prow"><dt>事業年度</dt><dd>3月期（毎年4月1日〜翌年3月31日）</dd></div>
+          <div class="prow"><dt>認証</dt><dd>ISMS ISO/IEC 27001（登録番号 <span class="mono">IS-000000</span>）／プライバシーマーク</dd></div>
+          <div class="prow">
+            <dt>事業内容</dt>
+            <dd>
+              <ul>
+                <li>受託システム開発およびシステム運用保守</li>
+                <li>SaaS「Ridgeline」の企画・開発・提供</li>
+                <li>データ基盤構築およびMLOps支援</li>
+                <li>技術顧問・開発内製化支援</li>
+              </ul>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===================== CAREERS ===================== -->
+    <section class="sec" id="careers">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>採用情報</h2>
+          <span class="en">Careers</span>
+          <span class="sub">2026年度 通年採用</span>
+        </div>
+
+        <div class="careers">
+          <div>
+            <p class="lead">
+              受託と自社プロダクトの両方があるので、担当は数年単位で行き来します。
+              「顧客の現場を見に行った翌週に、自分たちのプロダクトの設計を直す」——そういう働き方が合う人を探しています。
+              全社リモート可、出社は月2回のレビュー日のみ必須です。
+            </p>
+          </div>
+          <div class="roles">
+            <div class="role"><b>バックエンドエンジニア</b><span class="cond">Go / TypeScript ・ 実務3年〜</span></div>
+            <div class="role"><b>データエンジニア</b><span class="cond">dbt / BigQuery ・ 実務2年〜</span></div>
+            <div class="role"><b>SRE</b><span class="cond">Kubernetes / Terraform ・ 実務3年〜</span></div>
+            <div class="role"><b>プロダクトマネージャー</b><span class="cond">製造業ドメイン歓迎</span></div>
+            <div class="role"><b>新卒エンジニア</b><span class="cond">2027年4月入社 ・ 若干名</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section class="sec sec-tint" id="contact">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>お問い合わせ</h2>
+          <span class="en">Contact</span>
+          <span class="sub">通常2営業日以内にご返信します</span>
+        </div>
+
+        <div class="contact-grid">
+          <dl class="cinfo">
+            <div class="cinfo-item">
+              <dt>Phone</dt>
+              <dd class="tel">03-0000-0000</dd>
+              <dd><small>受付時間：平日 10:00〜18:00<br>（土日祝・年末年始を除く）</small></dd>
+            </div>
+            <div class="cinfo-item">
+              <dt>Email</dt>
+              <dd class="mono">contact@example.co.jp</dd>
+            </div>
+            <div class="cinfo-item">
+              <dt>Head Office</dt>
+              <dd>東京都渋谷区千駄ヶ谷1-2-3<br>稜線千駄ヶ谷ビル 7F</dd>
+              <dd><small>JR千駄ケ谷駅 徒歩6分</small></dd>
+            </div>
+          </dl>
+
+          <form id="contact-form" novalidate>
+            <div class="two">
+              <div class="field">
+                <label for="cf-company">会社名 <span class="req mono">必須</span></label>
+                <input id="cf-company" name="company" type="text" autocomplete="organization" placeholder="株式会社○○">
+              </div>
+              <div class="field">
+                <label for="cf-name">お名前 <span class="req mono">必須</span></label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="山田 太郎">
+              </div>
+            </div>
+
+            <div class="two">
+              <div class="field">
+                <label for="cf-email">メールアドレス <span class="req mono">必須</span></label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" placeholder="taro@example.co.jp">
+              </div>
+              <div class="field">
+                <label for="cf-topic">ご相談の種類</label>
+                <select id="cf-topic" name="topic">
+                  <option>受託開発のご相談</option>
+                  <option>Ridgeline について</option>
+                  <option>データ基盤・MLOps</option>
+                  <option>技術顧問・内製化支援</option>
+                  <option>採用について</option>
+                  <option>その他</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-body">ご相談内容 <span class="req mono">必須</span></label>
+              <textarea id="cf-body" name="body" placeholder="現在の課題や、検討中の時期などをお書きください。要件が固まっていない段階でも構いません。"></textarea>
+            </div>
+
+            <div class="submit-row">
+              <button class="send" type="submit">送信する</button>
+              <p class="submit-note">送信内容は当社プライバシーポリシーに従って取り扱います。</p>
+            </div>
+
+            <div class="receipt" id="cf-receipt" hidden>
+              <b id="cf-title">送信を受け付けました</b>
+              <p class="no mono" id="cf-no"></p>
+              <p id="cf-msg"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer>
+      <div class="foot-top">
+        <div class="foot-mark">
+          <svg width="34" height="22" viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+            <polygon points="0,20 0,15 5,15 5,10 10,10 10,13 14,13 14,4 18,4 18,8 22,8 22,1 26,1 26,11 30,11 30,20"
+                     fill="none" stroke="var(--hero-accent)" stroke-width="1.6" stroke-linejoin="round"></polygon>
+          </svg>
+          <b>スカインライン・テクノロジーズ株式会社</b>
+        </div>
+        <p class="foot-addr">
+          東京都渋谷区千駄ヶ谷1-2-3　稜線千駄ヶ谷ビル 7F<br>
+          大阪オフィス／福岡オフィス
+        </p>
+        <div class="foot-links">
+          <span>プライバシーポリシー</span>
+          <span>情報セキュリティ基本方針</span>
+          <span>サイトポリシー</span>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p class="copy mono">© 2026 Skyline Technologies, Inc.</p>
+        <p class="disclaimer">
+          <b>本サイトはデモンストレーション用の架空の企業サイトです。</b>
+          社名・人名・所在地・電話番号・実績・数値はすべて架空のものであり、実在の企業・団体・個人とは一切関係ありません。
+        </p>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+
+  var receipt = document.getElementById('cf-receipt');
+  var titleEl = document.getElementById('cf-title');
+  var noEl = document.getElementById('cf-no');
+  var msgEl = document.getElementById('cf-msg');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var required = ['cf-company', 'cf-name', 'cf-email', 'cf-body'];
+    var missing = required.filter(function (id) {
+      return !document.getElementById(id).value.trim();
+    });
+
+    if (missing.length) {
+      receipt.hidden = false;
+      titleEl.textContent = '未入力の項目があります';
+      noEl.textContent = '';
+      msgEl.textContent = '会社名・お名前・メールアドレス・ご相談内容をご入力のうえ、もう一度送信してください。';
+      document.getElementById(missing[0]).focus();
+      return;
+    }
+
+    var d = new Date();
+    var pad = function (n) { return ('0' + n).slice(-2); };
+    var serial = String(Math.floor(Math.random() * 9000) + 1000);
+    var no = 'SKL-' + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + serial;
+
+    receipt.hidden = false;
+    titleEl.textContent = '送信を受け付けました';
+    noEl.textContent = '受付番号　' + no;
+    msgEl.textContent = 'このページはデモのため、実際には送信されません。担当より2営業日以内にご返信する想定の画面です。';
+    receipt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    form.reset();
+  });
+})();
+</script>
